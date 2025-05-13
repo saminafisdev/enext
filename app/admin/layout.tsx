@@ -1,19 +1,19 @@
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 
 import React from "react";
 
-const AdminLayout = ({ children }) => {
+import { ReactNode } from "react";
+
+const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <NavigationMenu>
