@@ -20,7 +20,7 @@ const data = [
 
 export default function ProductPerformance() {
   return (
-    <div className="w-full h-[300px] mt-10">
+    <div className="w-full h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           layout="vertical"
