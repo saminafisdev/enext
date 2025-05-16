@@ -44,7 +44,7 @@ export default function ProductPerformance() {
             <LabelList
               dataKey="value"
               position="right"
-              formatter={(val) =>
+              formatter={(val: number) =>
                 `$${val.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
               }
               style={{ fill: "#000", fontSize: 14 }}
