@@ -56,7 +56,7 @@ const Overview = () => {
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         {/* Best-Selling Categories */}
-        <Card>
+        <Card className="mt-5">
           <CardHeader>
             <CardTitle>How much you’re earning</CardTitle>
             <CardDescription>Estimated · Last 6 months</CardDescription>
@@ -65,7 +65,7 @@ const Overview = () => {
             <EarningsChart />
           </CardContent>
         </Card>
-        <Card>
+        <Card className="mt-5">
           <CardHeader>
             <CardTitle>Product performance</CardTitle>
             <CardDescription>Apr 13, 2025 to May 13, 2025</CardDescription>
@@ -77,7 +77,7 @@ const Overview = () => {
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         {/* Best-Selling Categories */}
-        <Card>
+        <Card className="mt-5">
           <CardHeader>
             <CardTitle>Best-Selling Categories</CardTitle>
           </CardHeader>

@@ -22,7 +22,7 @@ import {
 
 const TableChart = () => {
   return (
-    <Card>
+    <Card className="mt-5">
   <CardHeader>
     <CardTitle>Recent Sales</CardTitle>
   </CardHeader>
