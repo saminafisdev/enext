@@ -4,3 +4,11 @@ export async function getProducts() {
   const response = await fetch(`${BASE_URL}/products`);
   return response.json();
 }
+
+export async function filteredProducts(query: string) {
+  const response = await fetch(
+    `${BASE_URL}/products/search-product?search=${query}`
+  );
+
+  return response.json();
+}

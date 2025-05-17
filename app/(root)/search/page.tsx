@@ -1,5 +1,5 @@
 import ProductCard from "@/components/shared/product/ProductCard";
-import { getProducts } from "@/lib/api";
+import { getProducts, filteredProducts } from "@/lib/api";
 import Link from "next/link";
 import React, { Suspense } from "react";
 
@@ -21,10 +21,19 @@ interface Product {
   __v: number;
 }
 
-const SearchPage = async () => {
+const SearchPage = async (props: {
+  searchParams?: Promise<{
+    query?: string;
+  }>;
+}) => {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+
   try {
     // Fetch products
-    const response = await getProducts();
+    const response = query
+      ? await filteredProducts(query)
+      : await getProducts();
     const products: Product[] = Array.isArray(response.data)
       ? response.data
       : [];
