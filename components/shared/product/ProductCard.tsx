@@ -10,13 +10,23 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const ProductCard = () => {
+interface ProductCardProps {
+  product: {
+    _id: string;
+    title: string;
+    slug: string;
+    images: string[];
+    price: number;
+  };
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const ProductImage = () => (
-    <Link href={`/product/details`}>
+    <Link href={`/product/${product.slug}`}>
       <div className="relative h-52">
         <Image
-          src={"/shoe.jpg"}
-          alt={"Product image"}
+          src={product.images[0] || "/product_placeholder.png"} // Ensure placeholder is consistent
+          alt={product.title || "Product image"} // Fallback for alt text
           fill
           sizes="80vw"
           className="object-contain"
@@ -32,7 +42,10 @@ const ProductCard = () => {
           <ProductImage />
         </CardHeader>
         <CardContent className="p-3 flex-1 text-center">
-          <Link href={`/product/slug`}>Men Long sleeve shirt</Link>
+          <Link href={`/product/${product.slug}`}>
+            {product.title || "Untitled Product"}
+          </Link>{" "}
+          {/* Fallback for title */}
           <div className="flex items-center justify-center">
             <Star fill="green" strokeWidth={0} />
             <Star fill="green" strokeWidth={0} />
@@ -41,12 +54,15 @@ const ProductCard = () => {
           <p>
             <sup>$</sup>
             <span className="font-semibold text-3xl">
-              21<sup className="font-normal text-sm">12</sup>
-            </span>
+              {product.price || 0}
+            </span>{" "}
+            {/* Fallback for price */}
           </p>
         </CardContent>
         <CardFooter className="p-3">
-          <Button className="rounded-full w-auto mx-auto">Add to cart</Button>
+          <Button className="rounded-full w-auto mx-auto hover:cursor-pointer">
+            Add to cart
+          </Button>
         </CardFooter>
       </Card>
     </div>
