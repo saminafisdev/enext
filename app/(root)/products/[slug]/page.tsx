@@ -1,14 +1,9 @@
 import AddToCartBtn from "@/components/shared/product/AddToCartBtn";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getProductDetails } from "@/lib/api";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-
-interface PageProps {
-  params: { slug: string };
-}
 
 interface Product {
   _id: string;
@@ -28,8 +23,13 @@ interface Product {
   __v: number;
 }
 
-const ProductDetails = async (props) => {
-  const slug = await props.searchParams?.slug;
+interface PageProps {
+  searchParams: Promise<{ slug: string }>;
+}
+
+const ProductDetails = async ({ searchParams }: PageProps) => {
+  const params = await searchParams;
+  const slug = params.slug;
   const { data: product }: { data: Product } = await getProductDetails(slug);
 
   console.log(product.images[0]);
