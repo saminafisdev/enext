@@ -4,26 +4,38 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useDebouncedCallback } from "use-debounce";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function SearchInput() {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = useDebouncedCallback((query: string) => {
-    // Handle search logic here
+  const [input, setInput] = React.useState<string>("");
+
+  // const handleSearch = useDebouncedCallback((query: string) => {
+  //   // Handle search logic here
+  //   const params = new URLSearchParams(searchParams);
+
+  //   if (query) {
+  //     params.set("query", query);
+  //   } else {
+  //     params.delete("query");
+  //   }
+
+  //   replace(`${pathname}?${params.toString()}`);
+  // }, 300);
+
+  const handleSubmit = () => {
     const params = new URLSearchParams(searchParams);
 
-    if (query) {
-      params.set("query", query);
+    if (input.trim() !== "") {
+      params.set("query", input);
     } else {
       params.delete("query");
     }
 
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
+    replace(`/search/?${params.toString()}`);
+  };
 
   return (
     <div className="flex flex-1 items-center">
@@ -31,10 +43,15 @@ export default function SearchInput() {
         type="text"
         placeholder="Search eNext"
         className="bg-white text-black rounded-r-none"
-        onChange={(e) => handleSearch(e.target.value)}
+        onChange={(e) => setInput(e.target.value)}
         defaultValue={searchParams.get("query")?.toString()}
+        value={input}
       />
-      <Button type="submit" className="bg-green-600 rounded-l-none">
+      <Button
+        onClick={handleSubmit}
+        type="submit"
+        className="bg-green-600 rounded-l-none"
+      >
         <Search size={36} />
       </Button>
     </div>

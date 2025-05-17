@@ -1,6 +1,6 @@
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import SearchInput from "@/components/Search";
 
 const Header = () => {
@@ -9,7 +9,9 @@ const Header = () => {
       <Link href={"/"} className="text-3xl font-bold">
         eNext
       </Link>
-      <SearchInput />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchInput />
+      </Suspense>
       <Link href="/cart" className="flex items-end">
         <ShoppingCart size="32" />
         <span className="font-semibold text-sm">Cart</span>

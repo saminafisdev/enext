@@ -1,24 +1,29 @@
 // ChatbotWindow.tsx
 "use client";
-import { useState, useRef } from 'react';
-import { Send, X, Mic, Paperclip } from 'lucide-react';
-import MessageBubble from './MessageBubble';
-import VoiceRecorder from './VoiceRecorder';
+import { useState, useRef } from "react";
+import { Send, X, Paperclip } from "lucide-react";
+import MessageBubble from "./MessageBubble";
+// import VoiceRecorder from "./VoiceRecorder";
 
 export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
-  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
+    []
+  );
+  const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-    const userMsg = { sender: 'user', text: input };
+    const userMsg = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
-    setInput('');
+    setInput("");
 
     // Simulated bot reply for now
     setTimeout(() => {
-      setMessages((prev) => [...prev, { sender: 'bot', text: 'This is a simulated response.' }]);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "This is a simulated response." },
+      ]);
     }, 500);
 
     // Later: Replace this with backend API call
@@ -28,7 +33,10 @@ export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       const file = e.target.files[0];
-      setMessages((prev) => [...prev, { sender: 'user', text: `📎 Uploaded: ${file.name}` }]);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "user", text: `📎 Uploaded: ${file.name}` },
+      ]);
     }
   };
 
@@ -51,15 +59,24 @@ export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           className="flex-1 border rounded-lg px-3 py-2 text-sm shadow-sm"
           placeholder="Type a message..."
         />
         <label htmlFor="file-upload" className="cursor-pointer">
           <Paperclip />
-          <input id="file-upload" type="file" className="hidden" onChange={handleFileUpload} />
+          <input
+            id="file-upload"
+            type="file"
+            className="hidden"
+            onChange={handleFileUpload}
+          />
         </label>
-        <VoiceRecorder onRecordingComplete={(text) => setMessages((prev) => [...prev, { sender: 'user', text }])} />
+        {/* <VoiceRecorder
+          onRecordingComplete={(text) =>
+            setMessages((prev) => [...prev, { sender: "user", text }])
+          }
+        /> */}
         <Send className="cursor-pointer text-blue-600" onClick={sendMessage} />
       </div>
     </div>
