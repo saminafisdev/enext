@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -33,19 +32,20 @@ export default function SignInPage() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await loginUser(data);
-      const { token } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
 
-      localStorage.setItem("token", token);
-      toast.success("Login successful. Redirecting...");
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("userName", user.name); // Store the user's name for personalized greetings
+
+      toast.success(`Welcome back, ${user.name}! Redirecting...`);
 
       router.push("/");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response) {
-        toast.error(
-          err.response.data?.message || "Login failed. Something went wrong."
-        );
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message || "Login failed. Something went wrong.");
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("An unknown error occurred.");
       }
     }
   };

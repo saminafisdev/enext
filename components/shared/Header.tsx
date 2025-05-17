@@ -2,6 +2,7 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import SearchInput from "@/components/Search";
+import UserButton from "./UserButton";
 
 const Header = () => {
   return (
@@ -14,10 +15,13 @@ const Header = () => {
           <SearchInput />
         </Suspense>
       </div>
-      <Link href="/cart" className="flex items-end">
-        <ShoppingCart className="w-6 h-6" />
-        <span className="font-semibold text-sm">Cart</span>
-      </Link>
+      <div className="flex items-center gap-3">
+        <UserButton />
+        <Link href="/cart" className="flex items-end">
+          <ShoppingCart className="w-6 h-6" />
+          <span className="font-semibold text-sm">Cart</span>
+        </Link>
+      </div>
     </header>
   );
 };
