@@ -1,42 +1,45 @@
-// ChatbotWindow.tsx
 "use client";
+
 import { useState, useRef } from "react";
-import { Send, X, Paperclip } from "lucide-react";
+import { Send, X } from "lucide-react";
 import MessageBubble from "./MessageBubble";
-// import VoiceRecorder from "./VoiceRecorder";
+import { sendChatMessage } from "@/lib/api";
 
 export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
-    []
-  );
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const formatChatbotText = (text: string) => {
+    return text
+      .replace(/\\n/g, "\n")
+      .replace(/\* /g, "")
+      .split(/(?=\n• )|(?<=\*\s)/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join("\n");
+  };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userMsg = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setIsLoading(true);
 
-    // Simulated bot reply for now
-    setTimeout(() => {
+    try {
+      const rawReply = await sendChatMessage(input);
+      const formattedReply = formatChatbotText(rawReply);
+      setMessages((prev) => [...prev, { sender: "bot", text: formattedReply }]);
+    } catch (error: any) {
+      console.error("Chatbot error:", error);
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: "This is a simulated response." },
+        { sender: "bot", text: `⚠️ Error: ${error.message}` },
       ]);
-    }, 500);
-
-    // Later: Replace this with backend API call
-    // const res = await fetch('/api/chat', { method: 'POST', body: JSON.stringify({ message: input }) });
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const file = e.target.files[0];
-      setMessages((prev) => [
-        ...prev,
-        { sender: "user", text: `📎 Uploaded: ${file.name}` },
-      ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,6 +54,9 @@ export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
         {messages.map((msg, idx) => (
           <MessageBubble key={idx} sender={msg.sender} text={msg.text} />
         ))}
+        {isLoading && (
+          <div className="text-sm text-gray-400 italic animate-pulse">Bot is typing...</div>
+        )}
       </div>
 
       <div className="flex items-center gap-2">
@@ -63,20 +69,6 @@ export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
           className="flex-1 border rounded-lg px-3 py-2 text-sm shadow-sm"
           placeholder="Type a message..."
         />
-        <label htmlFor="file-upload" className="cursor-pointer">
-          <Paperclip />
-          <input
-            id="file-upload"
-            type="file"
-            className="hidden"
-            onChange={handleFileUpload}
-          />
-        </label>
-        {/* <VoiceRecorder
-          onRecordingComplete={(text) =>
-            setMessages((prev) => [...prev, { sender: "user", text }])
-          }
-        /> */}
         <Send className="cursor-pointer text-blue-600" onClick={sendMessage} />
       </div>
     </div>
