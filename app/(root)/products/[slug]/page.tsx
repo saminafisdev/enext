@@ -1,10 +1,39 @@
+import AddToCartBtn from "@/components/shared/product/AddToCartBtn";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getProductDetails } from "@/lib/api";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-const ProductDetails = () => {
+interface PageProps {
+  params: { slug: string };
+}
+
+interface Product {
+  _id: string;
+  title: string;
+  slug: string;
+  images: string[];
+  description: string;
+  category: string[];
+  sub_category: string[];
+  unit: string;
+  currentStock: number;
+  price: number;
+  discount: number;
+  publish: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+const ProductDetails = async (props) => {
+  const slug = await props.searchParams?.slug;
+  const { data: product }: { data: Product } = await getProductDetails(slug);
+
+  console.log(product.images[0]);
+
   return (
     <div>
       <section>
@@ -12,7 +41,7 @@ const ProductDetails = () => {
           <div className="col-span-2">
             <Image
               className="object-scale-down w-full h-auto"
-              src={"/shoe.jpg"}
+              src={product.images[0] || "/product_placeholder.png"}
               alt="Product image"
               width={500}
               height={500}
@@ -22,9 +51,9 @@ const ProductDetails = () => {
           <div className="flex w-full flex-col gap-2 md:p-5 col-span-2">
             <div className="flex flex-col gap-3">
               <p className="text-md rounded-full bg-grey-500/10  text-grey-500">
-                Brand Nike T-shirts
+                {product?.category[0] || "No category"}
               </p>
-              <h1 className="font-bold text-lg lg:text-xl">Tshirt for men</h1>
+              <h1 className="font-bold text-lg lg:text-xl">{product?.title}</h1>
 
               <div className="flex items-center">
                 <Star fill="green" strokeWidth={0} />
@@ -36,7 +65,7 @@ const ProductDetails = () => {
               <Separator />
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex gap-3">
-                  <p>$21.33</p>
+                  <p>${product.price}</p>
                 </div>
               </div>
             </div>
@@ -51,13 +80,9 @@ const ProductDetails = () => {
             <div className="flex flex-col gap-2">
               <p className="p-bold-20 text-grey-600">Product Description</p>
               <p className="p-medium-16 lg:p-regular-18">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel
-                voluptas sit necessitatibus libero aut beatae consequatur
-                deleniti ratione, magnam excepturi!
+                {product.description || "No description available"}
               </p>
-              <Button className="mt-4 rounded-full hover:cursor-pointer">
-                Add to Cart
-              </Button>
+              <AddToCartBtn stock={product.currentStock} />
             </div>
           </div>
         </div>

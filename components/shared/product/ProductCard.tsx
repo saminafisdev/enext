@@ -22,7 +22,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const ProductImage = () => (
-    <Link href={`/product/${product.slug}`}>
+    <Link href={`/products/slug/?slug=${product.slug}`}>
       <div className="relative h-52">
         <Image
           src={product.images[0] || "/product_placeholder.png"} // Ensure placeholder is consistent
@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <ProductImage />
         </CardHeader>
         <CardContent className="p-3 flex-1 text-center">
-          <Link href={`/product/${product.slug}`}>
+          <Link href={`/products/slug/?slug=${product.slug}`}>
             {product.title || "Untitled Product"}
           </Link>{" "}
           {/* Fallback for title */}

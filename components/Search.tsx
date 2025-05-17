@@ -12,19 +12,6 @@ export default function SearchInput() {
 
   const [input, setInput] = React.useState<string>("");
 
-  // const handleSearch = useDebouncedCallback((query: string) => {
-  //   // Handle search logic here
-  //   const params = new URLSearchParams(searchParams);
-
-  //   if (query) {
-  //     params.set("query", query);
-  //   } else {
-  //     params.delete("query");
-  //   }
-
-  //   replace(`${pathname}?${params.toString()}`);
-  // }, 300);
-
   const handleSubmit = () => {
     const params = new URLSearchParams(searchParams);
 
@@ -50,7 +37,7 @@ export default function SearchInput() {
       <Button
         onClick={handleSubmit}
         type="submit"
-        className="bg-green-600 rounded-l-none"
+        className="bg-primary rounded-l-none"
       >
         <Search size={36} />
       </Button>

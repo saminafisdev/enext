@@ -5,6 +5,12 @@ export async function getProducts() {
   return response.json();
 }
 
+export async function getProductDetails(slug: string) {
+  console.log(`${BASE_URL}/products/slug?slug=${slug}`);
+  const response = await fetch(`${BASE_URL}/products/slug?slug=${slug}`);
+  return response.json();
+}
+
 export async function filteredProducts(query: string) {
   const response = await fetch(
     `${BASE_URL}/products/search-product?search=${query}`
