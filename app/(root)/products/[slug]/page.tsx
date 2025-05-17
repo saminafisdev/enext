@@ -32,8 +32,6 @@ const ProductDetails = async ({ searchParams }: PageProps) => {
   const slug = params.slug;
   const { data: product }: { data: Product } = await getProductDetails(slug);
 
-  console.log(product.images[0]);
-
   return (
     <div>
       <section>

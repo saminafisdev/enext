@@ -1,5 +1,5 @@
 import ProductCard from "@/components/shared/product/ProductCard";
-import { getProducts, filteredProducts } from "@/lib/api";
+import { getProducts, filteredProducts, getCategories } from "@/lib/api";
 import Link from "next/link";
 import React, { Suspense } from "react";
 
@@ -21,6 +21,17 @@ interface Product {
   __v: number;
 }
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+  description: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const SearchPage = async (props: {
   searchParams?: Promise<{
     query?: string;
@@ -37,6 +48,7 @@ const SearchPage = async (props: {
     const products: Product[] = Array.isArray(response.data)
       ? response.data
       : [];
+    const { data: categories }: { data: Category[] } = await getCategories();
 
     return (
       <div>
@@ -49,15 +61,11 @@ const SearchPage = async (props: {
                 <li>
                   <Link href={""}>All</Link>
                 </li>
-                <li>
-                  <Link href={"#"}>Jeans</Link>
-                </li>
-                <li>
-                  <Link href={"#"}>Shoes</Link>
-                </li>
-                <li>
-                  <Link href={"#"}>Watches</Link>
-                </li>
+                {categories.map((category) => (
+                  <li key={category._id}>
+                    <Link href={""}>{category.name}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
