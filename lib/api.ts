@@ -28,3 +28,36 @@ export async function getCategories() {
 
   return response.json();
 }
+export const registerUser = async (data: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
+  const res = await fetch(`${BASE_URL}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+  if (!res.ok || json.error) {
+    throw new Error(json.message || "Registration failed");
+  }
+
+  return json;
+};
+
+export const loginUser = async (data: { email: string; password: string }) => {
+  const res = await fetch(`${BASE_URL}/users/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+  if (!res.ok || json.error) {
+    throw new Error(json.message || "Login failed");
+  }
+
+  return json;
+};
