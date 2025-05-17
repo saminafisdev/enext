@@ -27,12 +27,12 @@ const ProductCard = () => {
 
   return (
     <div>
-      <Card className="flex flex-col  ">
+      <Card className="flex flex-col">
         <CardHeader className="p-3">
           <ProductImage />
         </CardHeader>
         <CardContent className="p-3 flex-1 text-center">
-          <p>Men Long sleeve shirt</p>
+          <Link href={`/product/slug`}>Men Long sleeve shirt</Link>
           <div className="flex items-center justify-center">
             <Star fill="green" strokeWidth={0} />
             <Star fill="green" strokeWidth={0} />

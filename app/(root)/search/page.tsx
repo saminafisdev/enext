@@ -2,7 +2,11 @@ import ProductCard from "@/components/shared/product/ProductCard";
 import Link from "next/link";
 import React from "react";
 
-const SearchPage = () => {
+const SearchPage = async () => {
+  // Fetch products
+  // const res = await fetch("/products");
+  // const products = await res.json();
+
   return (
     <div>
       {/* Filter sidebar */}
@@ -51,6 +55,7 @@ const SearchPage = () => {
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 ">
+            {/* Display products */}
             {Array.from({ length: 10 }).map((_, index) => (
               <ProductCard key={index} />
             ))}
