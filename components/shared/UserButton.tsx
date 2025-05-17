@@ -35,7 +35,7 @@ const UserButton = () => {
             {user ? (
               `Hello, ${user}`
             ) : (
-              <Link href="/auth/signIn">Hello, Sign In</Link>
+              <Link href="/signIn">Hello, Sign In</Link>
             )}
           </NavigationMenuTrigger>
           {user && (
