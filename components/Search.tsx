@@ -2,45 +2,28 @@
 
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { SearchIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export default function SearchInput() {
   const searchParams = useSearchParams();
-  const { replace } = useRouter();
-
-  const [input, setInput] = React.useState<string>("");
-
-  const handleSubmit = () => {
-    const params = new URLSearchParams(searchParams);
-
-    if (input.trim() !== "") {
-      params.set("query", input);
-    } else {
-      params.delete("query");
-    }
-
-    replace(`/search/?${params.toString()}`);
-  };
+  const query = searchParams.get("query") || "";
 
   return (
-    <div className="flex flex-1 items-center">
+    <form action="/search" method="GET" className="flex  items-stretch h-10 ">
       <Input
-        type="text"
+        type="search"
         placeholder="Search eNext"
-        className="bg-white text-black rounded-r-none"
-        onChange={(e) => setInput(e.target.value)}
-        defaultValue={searchParams.get("query")?.toString()}
-        value={input}
+        className="bg-white text-black rounded-r-none h-full text-base"
+        name="query"
+        defaultValue={query}
       />
-      <Button
-        onClick={handleSubmit}
+      <button
         type="submit"
-        className="bg-primary rounded-l-none"
+        className="bg-primary text-primary-foreground rounded-s-none rounded-e-md h-full px-3 py-2 hover:cursor-pointer"
       >
-        <Search size={36} />
-      </Button>
-    </div>
+        <SearchIcon className="w-6 h-6" />
+      </button>
+    </form>
   );
 }

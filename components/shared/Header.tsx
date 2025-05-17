@@ -9,11 +9,13 @@ const Header = () => {
       <Link href={"/"} className="text-3xl font-bold">
         eNext
       </Link>
-      <Suspense fallback={<div>Loading...</div>}>
-        <SearchInput />
-      </Suspense>
+      <div className="max-w-xl flex-1">
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchInput />
+        </Suspense>
+      </div>
       <Link href="/cart" className="flex items-end">
-        <ShoppingCart size="32" />
+        <ShoppingCart className="w-6 h-6" />
         <span className="font-semibold text-sm">Cart</span>
       </Link>
     </header>
