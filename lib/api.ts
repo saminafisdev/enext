@@ -61,3 +61,34 @@ export const loginUser = async (data: { email: string; password: string }) => {
 
   return json;
 };
+
+//chatbot
+export const sendChatMessage = async (message: string): Promise<string> => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch("https://enextserver.vercel.app/api/v1/assist", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ question: message }),
+  });
+
+  const text = await res.text();
+  console.log("✅ RAW response from API:", text);
+
+  try {
+    const data = JSON.parse(text);
+    const rawReply = data.text || "🤖 No response from assistant.";
+    const reply = rawReply.replace(/\\n/g, "\n").trim(); // ✅ formatting line
+
+    if (!res.ok || data.error) {
+      throw new Error(reply);
+    }
+
+    return reply;
+  } catch (err) {
+    throw new Error("❌ Invalid JSON response: " + text);
+  }
+};
