@@ -41,7 +41,7 @@ export default function MessageBubble({
     }, 30);
 
     return () => clearInterval(interval);
-  }, [text, lines]);
+  }, [text]);
 
   return (
     <div
