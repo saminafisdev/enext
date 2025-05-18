@@ -6,7 +6,9 @@ import MessageBubble from "./MessageBubble";
 import { sendChatMessage } from "@/lib/api";
 
 export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
+    []
+  );
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,11 +34,16 @@ export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
       const rawReply = await sendChatMessage(input);
       const formattedReply = formatChatbotText(rawReply);
       setMessages((prev) => [...prev, { sender: "bot", text: formattedReply }]);
-    } catch (error: any) {
+    } catch (error) {
+      // error is typed as unknown, so we need to check its type for error.message
+      let errorMessage = "Unknown error";
+      if (error && typeof error === "object" && "message" in error) {
+        errorMessage = (error as { message: string }).message;
+      }
       console.error("Chatbot error:", error);
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: `⚠️ Error: ${error.message}` },
+        { sender: "bot", text: `⚠️ Error: ${errorMessage}` },
       ]);
     } finally {
       setIsLoading(false);
@@ -55,7 +62,9 @@ export default function ChatbotWindow({ onClose }: { onClose: () => void }) {
           <MessageBubble key={idx} sender={msg.sender} text={msg.text} />
         ))}
         {isLoading && (
-          <div className="text-sm text-gray-400 italic animate-pulse">Bot is typing...</div>
+          <div className="text-sm text-gray-400 italic animate-pulse">
+            Bot is typing...
+          </div>
         )}
       </div>
 

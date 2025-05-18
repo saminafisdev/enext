@@ -88,7 +88,7 @@ export const sendChatMessage = async (message: string): Promise<string> => {
     }
 
     return reply;
-  } catch (err) {
+  } catch {
     throw new Error("❌ Invalid JSON response: " + text);
   }
 };
